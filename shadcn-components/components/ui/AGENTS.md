@@ -72,6 +72,41 @@ export default declareComponent(ComplexComponentWrapper, {
 - Implement proper accessibility features (ARIA attributes, keyboard navigation)
 - Handle loading states and error states
 
+### Shadow DOM Portal Pattern (CRITICAL)
+Radix UI components that use Portal (Dialog, AlertDialog, Sheet, Popover, etc.) render content to `document.body` by default, which is **outside the Shadow DOM**. This causes Tailwind CSS styles to not apply.
+
+**Solution**: Use Radix UI's `container` prop to render portal content inside the Shadow DOM:
+
+```typescript
+// ❌ DON'T: Use default Portal (renders outside Shadow DOM)
+<DialogPrimitive.Portal>
+  <DialogPrimitive.Content>...</DialogPrimitive.Content>
+</DialogPrimitive.Portal>
+
+// ✅ DO: Use container prop to render inside Shadow DOM
+const containerRef = React.useRef<HTMLDivElement>(null);
+
+return (
+  <div ref={containerRef}>
+    <DialogPrimitive.Root>
+      <DialogPrimitive.Portal container={containerRef.current}>
+        <DialogPrimitive.Overlay className="..." />
+        <DialogPrimitive.Content className="...">
+          {/* Content renders inside Shadow DOM with styles applied */}
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
+  </div>
+);
+```
+
+**Components requiring this pattern**:
+- `dialog-wrapper.tsx` - Uses container prop for Dialog portal
+- `alert-dialog-wrapper.tsx` - Uses container prop for AlertDialog portal
+- Sheet, Popover, Tooltip, DropdownMenu - May need similar treatment
+
+**Import paths**: Use relative imports (`../../lib/utils`) instead of `@/` aliases for wrapper files to ensure webpack resolves correctly during `npx webflow library share`.
+
 ## Available Components
 
 ### Interactive Elements

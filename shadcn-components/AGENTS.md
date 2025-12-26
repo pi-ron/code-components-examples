@@ -87,3 +87,5 @@ When imported into Webflow, configure these props:
 2. **Build failures**: Ensure no Array/Object props in declareComponent
 3. **Missing dependencies**: Install with `npx shadcn@latest add component-name`
 4. **Import errors**: Verify all imports use correct paths and types
+5. **Shadow DOM Portal issues**: Radix UI Portal components (Dialog, AlertDialog, Sheet, Popover) render outside Shadow DOM by default - use `container` prop to fix (see `components/ui/AGENTS.md` for pattern)
+6. **Path alias errors**: Use relative imports (`../../lib/utils`) instead of `@/` aliases in wrapper files
