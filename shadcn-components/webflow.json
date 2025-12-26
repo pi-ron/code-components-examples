@@ -4,7 +4,8 @@
     "components": ["./components/**/*.webflow.@(js|jsx|mjs|ts|tsx)"],
     "description": "",
     "id": "shadcn-ui-components---examples",
-    "bundleConfig": "./webpack.webflow.js"
+    "bundleConfig": "./webpack.webflow.js",
+    "globals": "./globals.ts"
   },
   "telemetry": {
     "global": {
